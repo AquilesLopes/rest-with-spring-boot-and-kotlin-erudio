@@ -1,0 +1,14 @@
+###
+GET localhost:8080/sum/1/5
+
+###
+GET localhost:8080/sub/5/1
+
+###
+GET localhost:8080/div/2/10
+
+###
+GET localhost:8080/mul/2/10
+
+###
+GET localhost:8080/sqrt/81
