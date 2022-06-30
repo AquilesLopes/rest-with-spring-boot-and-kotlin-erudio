@@ -1,6 +1,7 @@
 package br.com.gluom.exception.handler
 
 import br.com.gluom.exception.ExceptionResponse
+import br.com.gluom.exception.RequiredObjectIsNullException
 import br.com.gluom.exception.ResourceNotFoundException
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
@@ -27,6 +28,17 @@ class CustomizedResponseEntityExceptionHandler : ResponseEntityExceptionHandler(
 
     @ExceptionHandler(ResourceNotFoundException::class)
     fun handleResourceNotFoundExceptions(ex: Exception, request: WebRequest): ResponseEntity<ExceptionResponse> {
+        val exceptionResponse = ExceptionResponse(
+            Date(),
+            ex.message ?: "Bad Request",
+            request.getDescription(false)
+        )
+        return ResponseEntity(exceptionResponse, HttpStatus.NOT_FOUND)
+    }
+
+    @ExceptionHandler(RequiredObjectIsNullException::class)
+    fun handleRequiredObjectIsNullException(ex: Exception, request: WebRequest):
+            ResponseEntity<ExceptionResponse> {
         val exceptionResponse = ExceptionResponse(
             Date(),
             ex.message ?: "Bad Request",

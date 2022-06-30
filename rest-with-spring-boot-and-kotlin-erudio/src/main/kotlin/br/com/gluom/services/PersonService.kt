@@ -2,6 +2,7 @@ package br.com.gluom.services
 
 import br.com.gluom.controller.PersonController
 import br.com.gluom.data.vo.v1.PersonVO
+import br.com.gluom.exception.RequiredObjectIsNullException
 import br.com.gluom.exception.ResourceNotFoundException
 import br.com.gluom.mapper.DozerMapper
 import br.com.gluom.model.Person
@@ -44,7 +45,8 @@ class PersonService {
         return personVO
     }
 
-    fun create(personVO: PersonVO) : PersonVO {
+    fun create(personVO: PersonVO?) : PersonVO {
+        if(personVO == null) throw RequiredObjectIsNullException()
         logger.info("PersonVO create with name ${personVO.firstName}")
 
         var person = DozerMapper.parseObject(personVO, Person::class.java)
@@ -58,7 +60,8 @@ class PersonService {
         return personVOResponse
     }
 
-    fun update(personVO: PersonVO) : PersonVO {
+    fun update(personVO: PersonVO?) : PersonVO {
+        if(personVO == null) throw RequiredObjectIsNullException()
         logger.info("PersonVO update with name ${personVO.firstName}")
 
         val person = personRepository.findById(personVO.key)
