@@ -1,65 +1,55 @@
 package br.com.gluom.services
 
+import br.com.gluom.exception.ResourceNotFoundException
 import br.com.gluom.model.Person
+import br.com.gluom.repository.PersonRepository
+import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
-import java.util.concurrent.atomic.AtomicLong
 import java.util.logging.Logger
 
 @Service
 class PersonService {
 
-    private val counter: AtomicLong = AtomicLong()
+    @Autowired
+    private lateinit var personRepository: PersonRepository
+
     private val logger = Logger.getLogger(PersonService::class.java.name)
 
     fun findAll(): List<Person> {
         logger.info("Person findAll")
-
-        val persons: MutableList<Person> = ArrayList()
-
-        for(i in 0..7){
-            val person = mockPerson(i)
-            persons.add(person)
-        }
-
-        return persons
+        return personRepository.findAll()
     }
 
     fun findById(id: Long): Person {
         logger.info("Person findById: $id")
-
-        val person = Person()
-        person.id = counter.incrementAndGet()
-        person.firstName = "John"
-        person.lastName = "Doe"
-        person.address = "123 Main St."
-        person.gender = "Male"
-        return person
+        return personRepository.findById(id)
+            .orElseThrow { ResourceNotFoundException("No record found for this ID") }
     }
 
     fun create(person: Person) : Person {
-        logger.info("Person create")
+        logger.info("Person create with name ${person.firstName}")
 
-        person.id = counter.incrementAndGet()
-        return person
+        return personRepository.save(person)
     }
 
     fun update(person: Person) : Person {
-        logger.info("Person update")
+        logger.info("Person update with name ${person.firstName}")
 
-        return person
+        val personDB = findById(person.id)
+
+        personDB.firstName = person.firstName
+        personDB.lastName = person.lastName
+        personDB.address = person.address
+        personDB.gender = person.gender
+
+        return personRepository.save(person)
     }
 
-    fun delete(id: Long) {}
-
-    private fun mockPerson(i: Int): Person {
-        val person = Person()
-        person.id = counter.incrementAndGet()
-        person.firstName = "Person name $i"
-        person.lastName = "last name $i"
-        person.address = "123 Main St."
-        person.gender = "Male"
-
-        return person
+    fun delete(id: Long) {
+        val person = findById(id)
+        logger.info("Deleted person with id ${person.id}")
+        return personRepository.delete(person)
     }
+
 
 }
