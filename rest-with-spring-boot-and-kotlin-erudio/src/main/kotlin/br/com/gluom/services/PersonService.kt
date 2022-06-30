@@ -1,6 +1,7 @@
 package br.com.gluom.services
 
 import br.com.gluom.data.vo.v1.PersonVO
+import br.com.gluom.data.vo.v2.PersonVO as PersonVOV2
 import br.com.gluom.exception.ResourceNotFoundException
 import br.com.gluom.mapper.DozerMapper
 import br.com.gluom.model.Person
@@ -37,6 +38,15 @@ class PersonService {
         person = personRepository.save(person)
 
         return DozerMapper.parseObject(person, PersonVO::class.java)
+    }
+
+    fun createV2(personVOV2: PersonVOV2) : PersonVOV2 {
+        logger.info("PersonVO create with name ${personVOV2.firstName}")
+
+        var person = DozerMapper.parseObject(personVOV2, Person::class.java)
+        person = personRepository.save(person)
+
+        return DozerMapper.parseObject(person, PersonVOV2::class.java)
     }
 
     fun update(personVO: PersonVO) : PersonVO {

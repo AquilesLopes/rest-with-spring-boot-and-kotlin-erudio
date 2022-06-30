@@ -6,6 +6,7 @@ import jakarta.persistence.GeneratedValue
 import jakarta.persistence.GenerationType
 import jakarta.persistence.Id
 import jakarta.persistence.Table
+import java.util.*
 
 @Entity
 @Table(name="person")
@@ -25,5 +26,7 @@ data class Person (
     var address: String = "",
 
     @Column(nullable = false, length = 50)
-    var gender: String = ""
+    var gender: String = "",
+
+    var birthDay: Date? = null
 )
