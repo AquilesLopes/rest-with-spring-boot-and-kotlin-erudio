@@ -3,7 +3,7 @@ package br.com.gluom.unittests.mapper
 import br.com.gluom.data.vo.v1.PersonVO
 import br.com.gluom.mapper.DozerMapper
 import br.com.gluom.model.Person
-import br.com.gluom.unittests.mapper.mocks.MockPerson
+import br.com.gluom.unittests.mocks.MockPerson
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test

@@ -1,10 +1,10 @@
-package br.com.gluom.mockito.services
+package br.com.gluom.unittests.mockito.services
 
 import br.com.gluom.exception.RequiredObjectIsNullException
 import br.com.gluom.model.Person
 import br.com.gluom.repository.PersonRepository
 import br.com.gluom.services.PersonService
-import br.com.gluom.unittests.mapper.mocks.MockPerson
+import br.com.gluom.unittests.mocks.MockPerson
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 

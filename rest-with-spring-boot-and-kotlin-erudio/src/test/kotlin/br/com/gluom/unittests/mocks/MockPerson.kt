@@ -1,4 +1,4 @@
-package br.com.gluom.unittests.mapper.mocks
+package br.com.gluom.unittests.mocks
 
 import br.com.gluom.data.vo.v1.PersonVO
 import br.com.gluom.model.Person
