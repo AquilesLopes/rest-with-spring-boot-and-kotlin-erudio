@@ -18,6 +18,7 @@
 		<kotlin.version>1.6.21</kotlin.version>
 		<!--<dozer.version>6.5.2</dozer.version>-->
 		<dozer.version>6.4.1</dozer.version>
+		<springdoc.version>2.0.0-M3</springdoc.version>
 	</properties>
 	<dependencies>
 		<dependency>
@@ -69,6 +70,11 @@
 		<dependency>
 			<groupId>com.fasterxml.jackson.dataformat</groupId>
 			<artifactId>jackson-dataformat-yaml</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.springdoc</groupId>
+			<artifactId>springdoc-openapi-starter-webmvc-ui</artifactId>
+			<version>${springdoc.version}</version>
 		</dependency>
 
 		<!--<dependency>
@@ -135,7 +141,7 @@
 			<name>Spring Milestones</name>
 			<url>https://repo.spring.io/milestone</url>
 			<snapshots>
-				<enabled>false</enabled>
+				<enabled>true</enabled>
 			</snapshots>
 		</repository>
 	</repositories>
