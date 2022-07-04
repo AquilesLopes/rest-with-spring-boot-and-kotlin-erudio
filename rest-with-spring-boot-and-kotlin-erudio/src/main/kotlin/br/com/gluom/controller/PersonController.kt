@@ -14,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
 
+//@CrossOrigin
 @RestController
 @RequestMapping("/api/v1/person")
 @Tag(name = "Person", description = "Endpoints for Managing person")
@@ -50,6 +51,7 @@ class PersonController {
         return personService.findAll()
     }
 
+    //@CrossOrigin(origins = ["http://localhost:8080"])
     @GetMapping(value=["/{id}"], produces=[MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML, MediaType.APPLICATION_YML])
     @Operation(summary = "Find a Person", description = "Find a Person by id",
         tags = ["Person"],
