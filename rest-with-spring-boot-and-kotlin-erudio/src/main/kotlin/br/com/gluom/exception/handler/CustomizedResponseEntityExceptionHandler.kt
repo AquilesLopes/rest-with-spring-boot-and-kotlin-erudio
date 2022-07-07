@@ -1,6 +1,7 @@
 package br.com.gluom.exception.handler
 
 import br.com.gluom.exception.ExceptionResponse
+import br.com.gluom.exception.InvalidJwtAuthenticationException
 import br.com.gluom.exception.RequiredObjectIsNullException
 import br.com.gluom.exception.ResourceNotFoundException
 import org.springframework.http.HttpStatus
@@ -45,6 +46,17 @@ class CustomizedResponseEntityExceptionHandler : ResponseEntityExceptionHandler(
             request.getDescription(false)
         )
         return ResponseEntity(exceptionResponse, HttpStatus.NOT_FOUND)
+    }
+
+    @ExceptionHandler(InvalidJwtAuthenticationException::class)
+    fun handleInvalidJwtAuthenticationException(ex: Exception, request: WebRequest):
+            ResponseEntity<ExceptionResponse> {
+        val exceptionResponse = ExceptionResponse(
+            Date(),
+            ex.message ?: "Forbidden",
+            request.getDescription(false)
+        )
+        return ResponseEntity(exceptionResponse, HttpStatus.FORBIDDEN)
     }
 
 }
