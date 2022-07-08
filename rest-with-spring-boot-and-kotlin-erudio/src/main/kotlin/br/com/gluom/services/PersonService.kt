@@ -10,6 +10,7 @@ import br.com.gluom.repository.PersonRepository
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo
 import org.springframework.stereotype.Service
+import org.springframework.transaction.annotation.Transactional
 import java.util.logging.Logger
 
 @Service
@@ -78,6 +79,24 @@ class PersonService {
         personVOResponse.add(withSelfRel)
 
         return personVOResponse
+    }
+
+
+    @Transactional
+    fun disablePerson(id: Long): PersonVO {
+        logger.info("Disabling one person findById: $id")
+
+        var person = personRepository.findById(id)
+            .orElseThrow { ResourceNotFoundException("No record found for this ID") }
+
+        person.enabled = false
+
+        personRepository.disablePerson(person.id)
+
+        val personVO = DozerMapper.parseObject(person, PersonVO::class.java)
+        val withSelfRel = linkTo(PersonController::class.java).slash(personVO.key).withSelfRel()
+        personVO.add(withSelfRel)
+        return personVO
     }
 
     fun delete(id: Long) {
