@@ -1,9 +1,11 @@
 cors:
   originPatterns: http://localhost:8080, http://localhost:3000
+file:
+  upload-dir: D:/teste/kotlin/uploads
 security:
   jwt:
     token:
-      secret-key: 
+      secret-key: 53cr37
       expire-length: 3600000
 spring:
   datasource:
@@ -15,6 +17,12 @@ spring:
     hibernate:
       ddl-auto: none
     show-sql: true
+  servlet:
+    multipart:
+      enabled: true
+      file-size-threshold: 2KB
+      max-file-size: 200MB
+      max-request-size: 215MB
 spring-doc:
   paths-to-match:
     - /api/v1/**

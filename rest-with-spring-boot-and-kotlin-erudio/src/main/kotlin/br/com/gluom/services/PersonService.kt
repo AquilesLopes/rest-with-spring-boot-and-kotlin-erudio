@@ -8,6 +8,11 @@ import br.com.gluom.mapper.DozerMapper
 import br.com.gluom.model.Person
 import br.com.gluom.repository.PersonRepository
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.data.domain.Page
+import org.springframework.data.domain.Pageable
+import org.springframework.data.web.PagedResourcesAssembler
+import org.springframework.hateoas.EntityModel
+import org.springframework.hateoas.PagedModel
 import org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
@@ -19,22 +24,35 @@ class PersonService {
     @Autowired
     private lateinit var personRepository: PersonRepository
 
+    @Autowired
+    private lateinit var assembler: PagedResourcesAssembler<PersonVO>
+
     private val logger = Logger.getLogger(PersonService::class.java.name)
 
-    fun findAll(): List<PersonVO> {
+    fun findAll(pageable : Pageable): PagedModel<EntityModel<PersonVO>> {
         logger.info("PersonVO findAll")
-        val people = personRepository.findAll()
+        val people = personRepository.findAll(pageable)
 
-        val vos = DozerMapper.parseListObjects(people, PersonVO::class.java)
+        val vos = pagePersonToPageVOs(people)
 
-        for(personVO in vos) {
-            val withSelfRel = linkTo(PersonController::class.java).slash(personVO.key).withSelfRel()
-            personVO.add(withSelfRel)
-        }
-
-        return vos
+        return assembler.toModel(vos)
     }
 
+    fun findPersonByName(firstName: String, pageable : Pageable): PagedModel<EntityModel<PersonVO>> {
+        logger.info("PersonVO ByName")
+        val people = personRepository.findPersonByName(firstName, pageable)
+
+        val vos = pagePersonToPageVOs(people)
+
+        return assembler.toModel(vos)
+    }
+    
+    fun pagePersonToPageVOs(page: Page<Person>): Page<PersonVO> {
+        val vos = page.map { p -> DozerMapper.parseObject(p, PersonVO::class.java) }
+        vos.map { p -> p.add(linkTo(PersonController::class.java).slash(p.key).withSelfRel()) }
+        return vos
+    }
+    
     fun findById(id: Long): PersonVO {
         logger.info("PersonVO findById: $id")
         val person = personRepository.findById(id)
