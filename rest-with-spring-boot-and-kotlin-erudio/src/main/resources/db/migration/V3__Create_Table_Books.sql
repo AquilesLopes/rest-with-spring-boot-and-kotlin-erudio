@@ -1,8 +1,10 @@
-﻿CREATE TABLE `books` (
-  `id` bigint(20) NOT NULL AUTO_INCREMENT,
-  `author` longtext NOT NULL,
-  `launch_date` datetime(6),
-  `price` decimal(65,2) NOT NULL,
-  `title` longtext  NOT NULL,
-   PRIMARY KEY (`id`)
+﻿CREATE SEQUENCE books_seq;
+
+CREATE TABLE books (
+   id bigint NOT NULL DEFAULT NEXTVAL ('books_seq'),
+   author text NOT NULL,
+   launch_date timestamp(6),
+   price decimal(65,2) NOT NULL,
+   title text  NOT NULL,
+   PRIMARY KEY (id)
 )
